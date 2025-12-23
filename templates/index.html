@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}首页{% endblock %}
+
+{% block hero %}
+<div class="hero">
+    <h1>系统概览</h1>
+    <p>启动信息、数据库状态与关键数据统计。</p>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="grid">
+    <div class="card span-6">
+        <h2>运行状态</h2>
+        <div class="kv">
+            <div class="kv-item">
+                <div class="k">当前时间</div>
+                <div class="v">{{ now }}</div>
+            </div>
+            <div class="kv-item">
+                <div class="k">数据库连接</div>
+                <div class="v">
+                    {% if db_ok %}
+                    <span class="badge ok">正常</span>
+                    {% else %}
+                    <span class="badge err">异常</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% if not db_ok %}
+            <div class="kv-item">
+                <div class="k">错误信息</div>
+                <div class="v">{{ db_error }}</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card span-6">
+        <h2>数据统计</h2>
+        <div class="kv">
+            <div class="kv-item">
+                <div class="k">Wine 总数</div>
+                <div class="v">{{ wine_count }}</div>
+            </div>
+            <div class="kv-item">
+                <div class="k">ImportBatch 总数</div>
+                <div class="v">{{ batch_count }}</div>
+            </div>
+            <div class="kv-item">
+                <div class="k">最近新增 Wine 的批次</div>
+                <div class="v">
+                    {% if latest_batch %}
+                    #{{ latest_batch.id }} / {{ latest_batch.source }} / {{ latest_batch.timestamp }}
+                    {% else %}
+                    暂无
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

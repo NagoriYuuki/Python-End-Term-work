@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}机器学习分析{% endblock %}
+
+{% block hero %}
+<div class="hero">
+    <h1>机器学习分析</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="grid">
+    <div class="card span-5">
+        <h2>结果</h2>
+        {% if message %}
+        <p class="badge err">{{ message }}</p>
+        {% else %}
+        <div class="kv">
+            <div class="kv-item">
+                <div class="k">准确率</div>
+                <div class="v">{{ '%.4f'| format(accuracy) }}%</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="card span-7">
+        <h2>准确率图</h2>
+        {% if bar_chart %}
+        <div>{{ bar_chart|safe }}</div>
+        {% else %}
+        <p class="badge">暂无图表</p>
+        {% endif %}
+    </div>
+
+    <div class="card span-7">
+        <h2>特征重要性</h2>
+        {% if fi_chart %}
+        <div>{{ fi_chart|safe }}</div>
+        {% else %}
+        <p class="badge">暂无图表</p>
+        {% endif %}
+    </div>
+
+    <div class="card span-5">
+        <h2>混淆矩阵</h2>
+
+        {% if cm %}
+        <div class="table-wrap">
+            <table style="min-width: 0;">
+                <thead>
+                    <tr>
+                        <th>真实\\预测</th>
+                        {% for lb in labels %}
+                        <th>{{ lb }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in range(labels|length) %}
+                    <tr>
+                        <th>{{ labels[i] }}</th>
+                        {% for j in range(labels|length) %}
+                        <td>{{ cm[i][j] }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="badge">暂无矩阵</p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

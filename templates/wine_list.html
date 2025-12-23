@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Wine 管理{% endblock %}
+
+{% block hero %}
+<div class="hero">
+    <h1>Wine 管理</h1>
+    <p>查看、添加 wine 数据</p>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="grid">
+    <div class="card span-7">
+        <h2>Wine 列表</h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Alcohol</th>
+                        <th>Malic Acid</th>
+                        <th>Color Intensity</th>
+                        <th>Target</th>
+                        <th>Batch Source</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for w in wines %}
+                    <tr>
+                        <td>{{ w.id }}</td>
+                        <td>{{ '%.3f'|format(w.alcohol) }}</td>
+                        <td>{{ '%.3f'|format(w.malic_acid) }}</td>
+                        <td>{{ '%.3f'|format(w.color_intensity) }}</td>
+                        <td>{{ w.target }}</td>
+                        <td>
+                            {% if w.import_batch %}
+                            {{ w.import_batch.source }}
+                            {% else %}
+                            -
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form method="post" action="{{ url_for('delete_wine', wine_id=w.id) }}" onsubmit="return confirm('确认删除这条记录吗？ID={{ w.id }}');">
+                                <button class="btn danger" type="submit">删除</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card span-5">
+        <h2>新增 Wine</h2>
+        <form class="form" method="post" action="{{ url_for('add_wine') }}">
+            <div class="field">
+                <label for="alcohol">Alcohol（酒精含量）</label>
+                <input id="alcohol" name="alcohol" type="number" step="0.001" required />
+            </div>
+
+            <div class="field">
+                <label for="malic_acid">Malic Acid（苹果酸）</label>
+                <input id="malic_acid" name="malic_acid" type="number" step="0.001" required />
+            </div>
+
+            <div class="field">
+                <label for="color_intensity">Color Intensity（颜色强度）</label>
+                <input id="color_intensity" name="color_intensity" type="number" step="0.001" required />
+            </div>
+
+            <div class="field">
+                <label for="target">Target（类别）</label>
+                <select id="target" name="target" required>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="source">来源（source）</label>
+                <input id="source" name="source" type="text" maxlength="255" value="-" required />
+            </div>
+
+
+            <div class="actions">
+                <button class="btn primary" type="submit">提交新增</button>
+                <a class="btn" href="{{ url_for('index') }}">返回首页</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

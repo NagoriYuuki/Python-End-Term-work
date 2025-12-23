@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}葡萄酒信息管理系统{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="topbar">
+            <div class="brand">
+                <div class="brand-title">Wine 数据信息管理系统</div>
+            </div>
+            <nav class="nav">
+                <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">首页</a>
+                <a href="{{ url_for('wine_list') }}"
+                    class="{% if request.endpoint == 'wine_list' %}active{% endif %}">Wine 管理</a>
+                <a href="{{ url_for('analysis_page') }}"
+                    class="{% if request.endpoint == 'analysis_page' %}active{% endif %}">数据分析</a>
+            </nav>
+        </div>
+
+        {% block hero %}{% endblock %}
+
+        {% block content %}{% endblock %}
+
+    </div>
+</body>
+
+</html>
